@@ -1,0 +1,56 @@
+function normalizeUnits(manifest) {
+  const manifest1 = {...manifest};
+  if(manifest1.unit === "kg") {
+    return manifest1;
+  }
+
+  if(manifest1.unit === "lb") {
+    manifest1.weight = manifest1.weight * (0.45)
+    manifest1.unit = "kg";
+    return manifest1;
+  }
+}
+
+console.log(normalizeUnits({ containerId: 68, destination: "Salinas", weight: 101, unit: "lb", hazmat: true}));
+
+
+function validateManifest(manifest) {
+  const manifest1 = {...manifest};
+  const newObject = {};
+  if(!(Object.hasOwn(manifest1, "containerId"))) {
+    newObject["containerId"] = "Missing"
+  }else if(manifest.containerId <= 0 ||  manifest.containerId == null || !Number.isInteger(manifest1.containerId)) {
+    newObject["containerId"] = "Invalid"
+  }
+
+  if (!Object.hasOwn(manifest1, "destination")) {
+  newObject["destination"] = "Missing";
+} else if (
+  typeof manifest1["destination"] !== "string" ||
+  manifest1["destination"].trim().length === 0
+) {
+  newObject["destination"] = "Invalid";
+}
+
+  if(!(Object.hasOwn(manifest1, "weight"))) {
+    newObject["weight"] = "Missing"
+  }else if(!(manifest1.weight > 0)) {
+    newObject["weight"] = "Invalid"
+  }
+
+  if(!(Object.hasOwn(manifest1, "unit"))) {
+    newObject["unit"] = "Missing"
+  }else if(!(manifest1.unit === "kg" || manifest1.unit === "lb")) {
+    newObject["unit"] = "Invalid"
+  }
+
+  if(!(Object.hasOwn(manifest1, "hazmat"))) {
+    newObject["hazmat"] = "Missing"
+  }else if(!(manifest1.hazmat === true || manifest1.hazmat === false)) {
+    newObject["hazmat"] = "Invalid"
+  }
+
+  return newObject;
+}
+
+console.log(validateManifest({ containerId: 1, destination: "Santa Cruz", weight: 304, unit: "kg", hazmat: false }));
