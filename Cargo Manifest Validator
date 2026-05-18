@@ -54,3 +54,20 @@ function validateManifest(manifest) {
 }
 
 console.log(validateManifest({ containerId: 1, destination: "Santa Cruz", weight: 304, unit: "kg", hazmat: false }));
+
+function processManifest(manifest) {
+  const manifest1 = {...manifest};
+  const result = validateManifest(manifest1);
+  const isValid = Object.keys(result).length === 0;
+  if(isValid) {
+    console.log(`Validation success: ${manifest1.containerId}`);
+    const totalWeight = normalizeUnits(manifest1)
+    console.log(`Total weight: ${totalWeight.weight} kg`);
+  } else {
+    console.log(`Validation error: ${manifest1.containerId}`);
+    console.log(validateManifest(manifest1));
+  }
+}
+
+
+processManifest({ containerId: 55, destination: "Carmel", weight: 400, unit: "lb", hazmat: false });
