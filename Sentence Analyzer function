@@ -62,3 +62,16 @@ function getWordCount(sentence) {
 
 const wordCount  = getWordCount("I love freeCodeCamp");
 console.log(`Word  Count: ${wordCount}`);
+
+
+function sentenceAnalyzer(sentence) {
+  console.log("\n\n");
+  console.log("Vowel Count: "+getVowelCount(sentence))
+  console.log("Consonant Count: "+getConsonantCount(sentence))
+  console.log("Punctuation Count: "+getPunctuationCount(sentence))
+  console.log("word Count: "+getWordCount(sentence))
+
+  return "Thanks for using sentence Analyzer"
+}
+
+console.log(sentenceAnalyzer("I love freeCodeCamp"));
