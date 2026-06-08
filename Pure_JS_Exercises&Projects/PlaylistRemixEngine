@@ -1,0 +1,89 @@
+const playlists = [
+  [
+    {
+      trackId: "trk101",
+      artist: "Velvet Comet",
+      title: "Crimson Afterglow",
+      votes: 5,
+      bpm: 122
+    },
+    {
+      trackId: "trk102",
+      artist: "Neon Harbor",
+      title: "Static Horizon",
+      votes: 2,
+      bpm: 108
+    },
+    {
+      trackId: "trk103",
+      artist: "Lunar Arcade",
+      title: "Midnight Frequency",
+      votes: 4,
+      bpm: 128
+    }
+  ],
+  [
+    {
+      trackId: "trk201",
+      artist: "Solar Echo",
+      title: "Glass Skyline",
+      votes: 3,
+      bpm: 115
+    },
+    {
+      trackId: "trk202",
+      artist: "Velvet Comet",
+      title: "Satellite Hearts",
+      votes: 6,
+      bpm: 124
+    }
+  ]
+];
+
+function flattenPlaylists(arr) {
+  if(!(Array.isArray(arr))) {
+    return [];
+  }
+
+  let fA = [];
+  let flatIndex = 0
+  for(let i = 0; i<arr.length; i++) {
+    for(let j = 0; j<arr[i].length; j++) {
+      fA.push(arr[i][j]);
+      fA[fA.length -1].source = [i, j];
+    }
+    flatIndex++
+  }
+
+  return fA;
+}
+
+let fAA = flattenPlaylists(playlists);
+
+function scoreTracks(fAA) {
+  for(let i = 0; i<fAA.length; i++) {
+    fAA[i].score = fAA[i].votes*10 - Math.abs(fAA[i].bpm -120);
+  }
+
+  return fAA
+}
+
+let sAA = scoreTracks(fAA)
+
+function dedupeTracks(sAA) {
+  let uAA = []
+
+  for(let i = 0; i<sAA.length; i++) {
+    if(!(uAA.includes(sAA[i].trackId))){
+      uAA.push(sAA[i]);
+    }
+  }
+
+  return uAA;
+}
+
+console.log(dedupeTracks(sAA));
+
+
+
+
