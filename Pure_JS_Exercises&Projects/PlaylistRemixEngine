@@ -58,8 +58,6 @@ function flattenPlaylists(arr) {
   return fA;
 }
 
-let fAA = flattenPlaylists(playlists);
-
 function scoreTracks(fAA) {
   for(let i = 0; i<fAA.length; i++) {
     fAA[i].score = fAA[i].votes*10 - Math.abs(fAA[i].bpm -120);
@@ -68,22 +66,59 @@ function scoreTracks(fAA) {
   return fAA
 }
 
-let sAA = scoreTracks(fAA)
-
 function dedupeTracks(sAA) {
-  let uAA = []
-
+  let check = {};
+  let res = []
   for(let i = 0; i<sAA.length; i++) {
-    if(!(uAA.includes(sAA[i].trackId))){
-      uAA.push(sAA[i]);
+    if(!check[sAA[i].trackId]) {
+      check[sAA[i].trackId] = true;
+      res.push(sAA[i]);
     }
   }
 
-  return uAA;
+  return res;
 }
 
-console.log(dedupeTracks(sAA));
+function enforceArtistQuota(dAA, num) {
+  let artistCount = {};
+  let result = [];
+  for(let i = 0; i<dAA.length; i++) {
+    const artist = dAA[i].artist;
+
+    if(!artistCount[artist]) {
+      artistCount[artist] = 0;
+    }
+
+    if(artistCount[artist] < num) {
+      result.push(dAA[i]);
+      artistCount[artist]++;
+    }
+  }
+
+  return result;
+}
 
 
+function buildSchedule(eAA) {
+  let result = [];
 
+  for(let i = 0; i<eAA.length; i++) {
+    const slot = i+1;
+    const trackId = eAA[i].trackId
+    result.push({slot, trackId});
+  }
+
+  return result;
+}
+
+
+function remixPlaylist(arr, num) {
+  let fAA = flattenPlaylists(arr);
+  let sAA = scoreTracks(fAA);
+  let dAA = dedupeTracks(sAA);
+  let eAA = enforceArtistQuota(dAA, num)
+  let bAA = buildSchedule(eAA);
+
+  return bAA;
+}
 
